@@ -96,22 +96,20 @@
       opacity: 0;
       animation: fadeIn 3s ease-in forwards;
     }
-#cancel-button {
-  margin-top: 20px;
-  padding: 20px 40px;
-  font-size: 2rem;
-  width: 300px;
-  font-family: 'Courier New', Courier, monospace;
-  background-color: #001a1a;
-  border: 3px solid #00ff99;
-  color: #00ff99;
-  cursor: pointer;
-  z-index: 3;
-}
-#cancel-button:hover {
-  background-color: #002d2d;
-}
-
+    #cancel-button {
+      margin-top: 20px;
+      padding: 20px 40px;
+      font-size: 2rem;
+      width: 300px;
+      font-family: 'Courier New', Courier, monospace;
+      background-color: #001a1a;
+      border: 3px solid #00ff99;
+      color: #00ff99;
+      cursor: pointer;
+      z-index: 3;
+    }
+    #cancel-button:hover {
+      background-color: #002d2d;
     }
     @keyframes flicker {
       from { opacity: 1; }
@@ -144,34 +142,50 @@
   </div>
 
   <div id="final" class="final-screen" style="display: none;">
-    I NOW HAVE ALL YOUR DATA HAHA – LOGGING OFF...
+    SYSTEM BREACH – LOGGING OFF...
   </div>
 
-<audio id="evil-audio" preload="auto" loop>
-  <source src="./youve-been-hacked.mp3" type="audio/mpeg" />
-</audio>
+  <audio id="evil-audio" preload="auto" loop>
+    <source src="./youve-been-hacked.mp3" type="audio/mpeg" />
+  </audio>
 
   <script>
     const audio = document.getElementById("evil-audio");
     const cancelButton = document.getElementById("cancel-button");
 
-function startChaos() {
-  goFullScreen(); // <--- trigger full screen first
-  audio.play().catch((error) => {
-    console.log('Autoplay prevented:', error);
-  });
-  cancelButton.style.display = "none";
-  document.querySelector(".container").classList.add("flashing");
-  launchFakePopups();
-  setTimeout(showFinalScreen, 10000); // SYSTEM BREACH screen after 10s
-}
+    // Full screen function
+    function goFullScreen() {
+      if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen();
+      } else if (document.documentElement.webkitRequestFullscreen) {
+        document.documentElement.webkitRequestFullscreen();
+      } else if (document.documentElement.msRequestFullscreen) {
+        document.documentElement.msRequestFullscreen();
+      }
+    }
 
+    function startChaos() {
+      goFullScreen();
+      audio.play().catch((error) => {
+        console.log('Autoplay prevented:', error);
+      });
+      cancelButton.style.display = "none";
+      document.querySelector(".container").classList.add("flashing");
+      launchFakePopups();
+      setTimeout(showFinalScreen, 10000); // SYSTEM BREACH after 10s
+    }
 
     document.body.addEventListener("click", function () {
       startChaos();
     }, { once: true });
 
-    // Typing animation
+    // Force audio loop if necessary
+    audio.addEventListener('ended', function () {
+      this.currentTime = 0;
+      this.play();
+    });
+
+    // Typing effect
     const message = "Downloading your data...";
     let i = 0;
     const typingEl = document.getElementById("typing");
@@ -184,7 +198,7 @@ function startChaos() {
     }
     type();
 
-    // Matrix rain effect
+    // Matrix rain
     const canvas = document.querySelector(".matrix");
     const ctx = canvas.getContext("2d");
     canvas.height = window.innerHeight;
@@ -203,7 +217,7 @@ function startChaos() {
     }
     setInterval(draw, 33);
 
-    // Fake file list
+    // Fake files
     const fileList = [
       'C:\\\\BlackVault\\\\TopClearance_Docs\\\\alien_implant_diagrams.pdf',
       'C:\\\\Recovered\\\\nsa-leak\\\\voice_transcripts_extraction.mp3',
