@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>GARBAHJ.EXE - Data Sync</title>
   <style>
     body {
@@ -19,7 +19,8 @@
       justify-content: center;
       align-items: center;
       flex-direction: column;
-      background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.9)), url('./Untitled-1.png') no-repeat center center;
+      background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.9)),
+        url('./Untitled-1.png') no-repeat center center;
       background-size: cover;
       text-align: center;
       position: relative;
@@ -77,14 +78,22 @@
       animation: popupRCE 0.3s ease-out forwards;
     }
     @keyframes popupRCE {
-      to { transform: translate(-50%, -50%) scale(1); }
+      to {
+        transform: translate(-50%, -50%) scale(1);
+      }
     }
     @keyframes flicker {
-      from { opacity: 1; }
-      to { opacity: 0.4; }
+      from {
+        opacity: 1;
+      }
+      to {
+        opacity: 0.4;
+      }
     }
     @keyframes fillBar {
-      to { width: 100%; }
+      to {
+        width: 100%;
+      }
     }
   </style>
 </head>
@@ -97,9 +106,11 @@
     </div>
     <div id="fake-files"></div>
   </div>
+
   <audio autoplay loop>
-    <source src="https://soundcloud.com/abd-lrahman-waly/anonymous-soundtrack-001?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing" type="audio/mpeg">
+    <source src="./youve-been-hacked.mp3" type="audio/mpeg" />
   </audio>
+
   <script>
     // Terminal Typing Effect
     const message = "Downloading your data...";
@@ -133,23 +144,23 @@
     }
     setInterval(draw, 33);
 
-    // Fake file names - more unsettling
+    // Fake file names - unsettling
     const fileList = [
-      'C:\\BlackVault\\TopClearance_Docs\\alien_implant_diagrams.pdf',
-      'C:\\Recovered\\nsa-leak\\voice_transcripts_extraction.mp3',
-      'C:\\DeepOps\\PROJECT_GARBAHJ\\autopsy_photos.zip',
-      'C:\\Personal\\therapy\\night_terrors_recording.wav',
-      'C:\\User\\Admin\\Desktop\\kill_list_12_final_draft.docx',
-      'C:\\Confidential\\DoNotOpen\\summoning_circle_cad.dwg',
-      'C:\\OldBackups\\GARBAGE\\memories_corrupted.mkv',
-      'C:\\Windows\\System32\\soul_upload_success.log'
+      'C:\\\\BlackVault\\\\TopClearance_Docs\\\\alien_implant_diagrams.pdf',
+      'C:\\\\Recovered\\\\nsa-leak\\\\voice_transcripts_extraction.mp3',
+      'C:\\\\DeepOps\\\\PROJECT_GARBAHJ\\\\autopsy_photos.zip',
+      'C:\\\\Personal\\\\therapy\\\\night_terrors_recording.wav',
+      'C:\\\\User\\\\Admin\\\\Desktop\\\\kill_list_12_final_draft.docx',
+      'C:\\\\Confidential\\\\DoNotOpen\\\\summoning_circle_cad.dwg',
+      'C:\\\\OldBackups\\\\GARBAGE\\\\memories_corrupted.mkv',
+      'C:\\\\Windows\\\\System32\\\\soul_upload_success.log'
     ];
-    const fileDisplay = document.getElementById('fake-files');
+    const fileDisplay = document.getElementById("fake-files");
     let fileIndex = 0;
     setInterval(() => {
       if (fileIndex < fileList.length) {
-        const line = document.createElement('div');
-        line.textContent = '>> ' + fileList[fileIndex];
+        const line = document.createElement("div");
+        line.textContent = ">> " + fileList[fileIndex];
         fileDisplay.appendChild(line);
         fileDisplay.scrollTop = fileDisplay.scrollHeight;
         if (fileIndex === 2) showRCENotification();
@@ -157,11 +168,11 @@
       }
     }, 800);
 
-    // Simulate an RCE pop-up
+    // Simulate RCE pop-up
     function showRCENotification() {
-      const popup = document.createElement('div');
-      popup.className = 'popup';
-      popup.textContent = '[!] Remote Code Execution triggered: injecting payload...';
+      const popup = document.createElement("div");
+      popup.className = "popup";
+      popup.textContent = "[!] Remote Code Execution triggered: injecting payload...";
       document.body.appendChild(popup);
     }
   </script>
