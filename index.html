@@ -155,15 +155,17 @@
     const audio = document.getElementById("evil-audio");
     const cancelButton = document.getElementById("cancel-button");
 
-    function startChaos() {
-      audio.play().catch((error) => {
-        console.log('Autoplay prevented:', error);
-      });
-      cancelButton.style.display = "none";
-      document.querySelector(".container").classList.add("flashing");
-      launchFakePopups();
-      setTimeout(showFinalScreen, 10000); // Show SYSTEM BREACH after 10s
-    }
+function startChaos() {
+  goFullScreen(); // <--- trigger full screen first
+  audio.play().catch((error) => {
+    console.log('Autoplay prevented:', error);
+  });
+  cancelButton.style.display = "none";
+  document.querySelector(".container").classList.add("flashing");
+  launchFakePopups();
+  setTimeout(showFinalScreen, 10000); // SYSTEM BREACH screen after 10s
+}
+
 
     document.body.addEventListener("click", function () {
       startChaos();
