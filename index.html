@@ -63,19 +63,41 @@
       overflow-y: auto;
       z-index: 2;
     }
-    .popup {
+    .popup, .fake-alert {
       position: fixed;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%) scale(0);
       padding: 30px;
-      border: 2px solid #00ff99;
+      border: 2px solid #ff0033;
       background: rgba(0, 0, 0, 0.9);
-      color: #00ff99;
+      color: #ff0033;
       font-family: monospace;
       font-size: 1.2rem;
       z-index: 9999;
       animation: popupRCE 0.3s ease-out forwards;
+      box-shadow: 0 0 20px red;
+    }
+    .flashing {
+      animation: flashingRed 0.2s infinite alternate;
+    }
+    @keyframes flashingRed {
+      from { background-color: #000; }
+      to { background-color: #300; }
+    }
+    #cancel-button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 1rem;
+      font-family: 'Courier New', Courier, monospace;
+      background-color: #001a1a;
+      border: 2px solid #00ff99;
+      color: #00ff99;
+      cursor: pointer;
+      z-index: 3;
+    }
+    #cancel-button:hover {
+      background-color: #002d2d;
     }
     @keyframes popupRCE {
       to {
@@ -83,36 +105,38 @@
       }
     }
     @keyframes flicker {
-      from {
-        opacity: 1;
-      }
-      to {
-        opacity: 0.4;
-      }
+      from { opacity: 1; }
+      to { opacity: 0.4; }
     }
     @keyframes fillBar {
-      to {
-        width: 100%;
-      }
+      to { width: 100%; }
     }
   </style>
 </head>
 <body>
-  <div class="container">
+  <div class="container flashing">
     <canvas class="matrix"></canvas>
     <h1 id="typing"></h1>
     <div class="progress">
       <div class="bar"></div>
     </div>
+    <button id="cancel-button">Cancel</button>
     <div id="fake-files"></div>
   </div>
 
-  <audio autoplay loop>
+  <audio id="evil-audio" loop>
     <source src="./youve-been-hacked.mp3" type="audio/mpeg" />
   </audio>
 
   <script>
-    // Terminal Typing Effect
+    document.getElementById("cancel-button").addEventListener("click", function () {
+      const audio = document.getElementById("evil-audio");
+      audio.play();
+      this.style.display = "none";
+      document.querySelector(".container").classList.add("flashing");
+      launchFakePopups();
+    });
+
     const message = "Downloading your data...";
     let i = 0;
     const typingEl = document.getElementById("typing");
@@ -125,7 +149,6 @@
     }
     type();
 
-    // Matrix Rain Effect
     const canvas = document.querySelector(".matrix");
     const ctx = canvas.getContext("2d");
     canvas.height = window.innerHeight;
@@ -144,16 +167,15 @@
     }
     setInterval(draw, 33);
 
-    // Fake file names - unsettling
     const fileList = [
-      'C:\\\\BlackVault\\\\TopClearance_Docs\\\\alien_implant_diagrams.pdf',
-      'C:\\\\Recovered\\\\nsa-leak\\\\voice_transcripts_extraction.mp3',
-      'C:\\\\DeepOps\\\\PROJECT_GARBAHJ\\\\autopsy_photos.zip',
-      'C:\\\\Personal\\\\therapy\\\\night_terrors_recording.wav',
-      'C:\\\\User\\\\Admin\\\\Desktop\\\\kill_list_12_final_draft.docx',
-      'C:\\\\Confidential\\\\DoNotOpen\\\\summoning_circle_cad.dwg',
-      'C:\\\\OldBackups\\\\GARBAGE\\\\memories_corrupted.mkv',
-      'C:\\\\Windows\\\\System32\\\\soul_upload_success.log'
+      'C:\\BlackVault\\TopClearance_Docs\\alien_implant_diagrams.pdf',
+      'C:\\Recovered\\nsa-leak\\voice_transcripts_extraction.mp3',
+      'C:\\DeepOps\\PROJECT_GARBAHJ\\autopsy_photos.zip',
+      'C:\\Personal\\therapy\\night_terrors_recording.wav',
+      'C:\\User\\Admin\\Desktop\\kill_list_12_final_draft.docx',
+      'C:\\Confidential\\DoNotOpen\\summoning_circle_cad.dwg',
+      'C:\\OldBackups\\GARBAGE\\memories_corrupted.mkv',
+      'C:\\Windows\\System32\\soul_upload_success.log'
     ];
     const fileDisplay = document.getElementById("fake-files");
     let fileIndex = 0;
@@ -168,12 +190,33 @@
       }
     }, 800);
 
-    // Simulate RCE pop-up
     function showRCENotification() {
       const popup = document.createElement("div");
       popup.className = "popup";
       popup.textContent = "[!] Remote Code Execution triggered: injecting payload...";
       document.body.appendChild(popup);
+    }
+
+    function launchFakePopups() {
+      const phrases = [
+        "Accessing BIOS...",
+        "Decrypting Vault...",
+        "Injecting Remote Payload...",
+        "Overwriting Bootloader...",
+        "Cloning Drive...",
+        "Reporting to Command Node..."
+      ];
+      let count = 0;
+      const interval = setInterval(() => {
+        if (count >= phrases.length) return clearInterval(interval);
+        const fake = document.createElement("div");
+        fake.className = "fake-alert";
+        fake.textContent = phrases[count];
+        fake.style.top = Math.random() * 80 + "%";
+        fake.style.left = Math.random() * 80 + "%";
+        document.body.appendChild(fake);
+        count++;
+      }, 1000);
     }
   </script>
 </body>
