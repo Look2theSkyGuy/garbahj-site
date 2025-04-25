@@ -96,19 +96,22 @@
       opacity: 0;
       animation: fadeIn 3s ease-in forwards;
     }
-    #cancel-button {
-      margin-top: 20px;
-      padding: 10px 20px;
-      font-size: 1rem;
-      font-family: 'Courier New', Courier, monospace;
-      background-color: #001a1a;
-      border: 2px solid #00ff99;
-      color: #00ff99;
-      cursor: pointer;
-      z-index: 3;
-    }
-    #cancel-button:hover {
-      background-color: #002d2d;
+#cancel-button {
+  margin-top: 20px;
+  padding: 20px 40px;
+  font-size: 2rem;
+  width: 300px;
+  font-family: 'Courier New', Courier, monospace;
+  background-color: #001a1a;
+  border: 3px solid #00ff99;
+  color: #00ff99;
+  cursor: pointer;
+  z-index: 3;
+}
+#cancel-button:hover {
+  background-color: #002d2d;
+}
+
     }
     @keyframes flicker {
       from { opacity: 1; }
@@ -144,9 +147,9 @@
     I NOW HAVE ALL YOUR DATA HAHA – LOGGING OFF...
   </div>
 
-  <audio id="evil-audio" preload="auto">
-    <source src="./youve-been-hacked.mp3" type="audio/mpeg" />
-  </audio>
+<audio id="evil-audio" preload="auto" loop>
+  <source src="./youve-been-hacked.mp3" type="audio/mpeg" />
+</audio>
 
   <script>
     const audio = document.getElementById("evil-audio");
