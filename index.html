@@ -19,25 +19,65 @@
       justify-content: center;
       align-items: center;
       flex-direction: column;
-      background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.9)), url('/mnt/data/Untitled-1.png') no-repeat center center;
+      background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.9)), url('Untitled-1.png') no-repeat center center;
       background-size: cover;
       text-align: center;
+      position: relative;
     }
     h1 {
       font-size: 2.5rem;
       animation: flicker 2s infinite alternate;
+      z-index: 2;
     }
     .progress {
       width: 60%;
       background: #001a1a;
       border: 1px solid #00ff99;
       margin-top: 20px;
+      z-index: 2;
     }
     .bar {
       height: 25px;
       width: 0%;
       background: #00ff99;
       animation: fillBar 8s forwards;
+    }
+    .matrix {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+    #fake-files {
+      position: absolute;
+      bottom: 40px;
+      font-size: 0.85rem;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 10px;
+      border: 1px solid #00ff99;
+      max-height: 100px;
+      overflow-y: auto;
+      z-index: 2;
+    }
+    .popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      padding: 30px;
+      border: 2px solid #00ff99;
+      background: rgba(0, 0, 0, 0.9);
+      color: #00ff99;
+      font-family: monospace;
+      font-size: 1.2rem;
+      z-index: 9999;
+      animation: popupRCE 0.3s ease-out forwards;
+    }
+    @keyframes popupRCE {
+      to { transform: translate(-50%, -50%) scale(1); }
     }
     @keyframes flicker {
       from { opacity: 1; }
@@ -50,10 +90,80 @@
 </head>
 <body>
   <div class="container">
-    <h1>Downloading your data...</h1>
+    <canvas class="matrix"></canvas>
+    <h1 id="typing"></h1>
     <div class="progress">
       <div class="bar"></div>
     </div>
+    <div id="fake-files"></div>
   </div>
+  <audio autoplay loop>
+    <source src="https://files.freemusicarchive.org/storage-freemusicarchive-org/music/no_curator/Future_World_Music/Volume_1/Future_World_Music_-_01_-_Dreamscape.mp3" type="audio/mpeg">
+  </audio>
+  <script>
+    // Terminal Typing Effect
+    const message = "Downloading your data...";
+    let i = 0;
+    const typingEl = document.getElementById("typing");
+    function type() {
+      if (i < message.length) {
+        typingEl.innerHTML += message.charAt(i);
+        i++;
+        setTimeout(type, 100);
+      }
+    }
+    type();
+
+    // Matrix Rain Effect
+    const canvas = document.querySelector(".matrix");
+    const ctx = canvas.getContext("2d");
+    canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth;
+    const letters = Array(256).join("1").split("");
+    function draw() {
+      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "#00ff99";
+      letters.map((y_pos, index) => {
+        const text = String.fromCharCode(3e4 + Math.random() * 33);
+        const x_pos = index * 10;
+        ctx.fillText(text, x_pos, y_pos);
+        letters[index] = y_pos > 758 + Math.random() * 1e4 ? 0 : y_pos + 10;
+      });
+    }
+    setInterval(draw, 33);
+
+    // Fake file names - more unsettling
+    const fileList = [
+      'C:\\BlackVault\\TopClearance_Docs\\alien_implant_diagrams.pdf',
+      'C:\\Recovered\\nsa-leak\\voice_transcripts_extraction.mp3',
+      'C:\\DeepOps\\PROJECT_GARBAHJ\\autopsy_photos.zip',
+      'C:\\Personal\\therapy\\night_terrors_recording.wav',
+      'C:\\User\\Admin\\Desktop\\kill_list_12_final_draft.docx',
+      'C:\\Confidential\\DoNotOpen\\summoning_circle_cad.dwg',
+      'C:\\OldBackups\\GARBAGE\\memories_corrupted.mkv',
+      'C:\\Windows\\System32\\soul_upload_success.log'
+    ];
+    const fileDisplay = document.getElementById('fake-files');
+    let fileIndex = 0;
+    setInterval(() => {
+      if (fileIndex < fileList.length) {
+        const line = document.createElement('div');
+        line.textContent = '>> ' + fileList[fileIndex];
+        fileDisplay.appendChild(line);
+        fileDisplay.scrollTop = fileDisplay.scrollHeight;
+        if (fileIndex === 2) showRCENotification();
+        fileIndex++;
+      }
+    }, 800);
+
+    // Simulate an RCE pop-up
+    function showRCENotification() {
+      const popup = document.createElement('div');
+      popup.className = 'popup';
+      popup.textContent = '[!] Remote Code Execution triggered: injecting payload...';
+      document.body.appendChild(popup);
+    }
+  </script>
 </body>
 </html>
