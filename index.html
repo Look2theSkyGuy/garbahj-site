@@ -81,23 +81,26 @@
     .flashing {
       animation: flashingRed 0.2s infinite alternate;
     }
+    .final-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: black;
+      color: red;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 2rem;
+      font-family: monospace;
+      z-index: 10000;
+      opacity: 0;
+      animation: fadeIn 3s ease-in forwards;
+    }
     @keyframes flashingRed {
       from { background-color: #000; }
       to { background-color: #300; }
-    }
-    #cancel-button {
-      margin-top: 20px;
-      padding: 10px 20px;
-      font-size: 1rem;
-      font-family: 'Courier New', Courier, monospace;
-      background-color: #001a1a;
-      border: 2px solid #00ff99;
-      color: #00ff99;
-      cursor: pointer;
-      z-index: 3;
-    }
-    #cancel-button:hover {
-      background-color: #002d2d;
     }
     @keyframes popupRCE {
       to {
@@ -110,6 +113,9 @@
     }
     @keyframes fillBar {
       to { width: 100%; }
+    }
+    @keyframes fadeIn {
+      to { opacity: 1; }
     }
   </style>
 </head>
@@ -124,6 +130,10 @@
     <div id="fake-files"></div>
   </div>
 
+  <div id="final" class="final-screen" style="display: none;">
+    I HAVE YOU DATA NOW HAHA – LOGGING OFF...
+  </div>
+
   <audio id="evil-audio" loop>
     <source src="./youve-been-hacked.mp3" type="audio/mpeg" />
   </audio>
@@ -135,6 +145,7 @@
       this.style.display = "none";
       document.querySelector(".container").classList.add("flashing");
       launchFakePopups();
+      setTimeout(showFinalScreen, 10000); // Show final screen after 10 seconds
     });
 
     const message = "Downloading your data...";
@@ -217,6 +228,11 @@
         document.body.appendChild(fake);
         count++;
       }, 1000);
+    }
+
+    function showFinalScreen() {
+      const finalScreen = document.getElementById("final");
+      finalScreen.style.display = "flex";
     }
   </script>
 </body>
